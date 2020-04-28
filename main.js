@@ -151,8 +151,8 @@ phina.define("MainScene", {
 		let rote = accel.rotation;
 		let ori  = accel.orientation;
 
-		this.accelRotate = rote.x;
-		this.accelOrientation = ori.alpha;
+		this.accelRotateLabel.text = rote.x;
+		this.accelOrientationLabel.text = ori.alpha;
 
 
 	}, //end update

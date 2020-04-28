@@ -129,8 +129,8 @@ phina.define("MainScene", {
 
 		//画面をクリックしたら
 		this.onpointstart = function( e ){
-			let p = e.pointer;
-			console.log( p.x,p.y );
+
+			request_permission();
 		};
 
 		this.accelRotate = 0;

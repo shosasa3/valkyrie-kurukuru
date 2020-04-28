@@ -80,6 +80,9 @@ phina.define("TitleScene", {
 		//スタートボタンが押されたら?
 		this.sButton.onpointstart = function() {
 
+			request_permission();	//傾きセンサーの許可を取る
+
+
 			//ボタンがクリックされたら？
 			self.exit();	//go to MainScene
 		};
@@ -135,8 +138,6 @@ phina.define("MainScene", {
 		this.accelOrientation = 0;
 		this.accelOrientationLabel = Label( this.accelOrientation ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+40 );
 
-
-		request_permission();	//傾きセンサーの許可を取る
 
 
 	}, //end init

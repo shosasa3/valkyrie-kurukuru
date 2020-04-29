@@ -89,7 +89,7 @@ phina.define("TitleScene", {
 		this.sButton.onpointstart = function() {
 
 			//ボタンがクリックされたら？
-			self.exit();	//go to MainScene
+			self.exit( "main" );	//go to MainScene
 		};
 
 
@@ -131,9 +131,11 @@ phina.define("MainScene", {
 		this.sprite.x = this.gridX.center();
 		this.sprite.y = this.gridY.center();
 
-		this.zStart = null;
-		this.rotFlg = false;
 
+		this.rotFlg = false;	//回転フラグ
+		this.checkFlg = false;	//判定フラグ
+		this.stopZ  = null;	//回転を止めた時のZ軸
+		
 
 		//画面をクリックしたら
 		this.onpointstart = function( e ){
@@ -144,6 +146,12 @@ phina.define("MainScene", {
 		this.accelRotateLabel = Label( this.accelRotate ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center() );
 		this.accelOrientation = 0;
 		this.accelOrientationLabel = Label( this.accelOrientation ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+40 );
+
+		//@check ラベル
+		this.testClearLabel = Label( "クリアしました。" ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+140 );
+		this.testNotClearLabel = Label( "失敗です" ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+140 );
+		this.testClearLabel.hide();
+		this.testNotClearLabel.hide();
 
 
 	}, //end init
@@ -157,19 +165,54 @@ phina.define("MainScene", {
 		let rot  = accel.rotation;
 		let ori  = accel.orientation;	//alphaでz軸
 
-		if( this.zStart == null ) this.zStart = ori.alpha;
 		
-		this.accelRotateLabel.text = this.rotFlg;
-		this.accelOrientationLabel.text = ori.alpha;
+		//回転スタート
+		if( ori.alpha >= 100 && ori.alpha <=120 )
+		{
+			this.rotFlg = true;
+			this.stopZ = ori.alpha;
+		}
+		if( ori.alpha >= 240 && ori.alpha <=280 )
+		{
+			this.rotFlg = true;
+			this.stopZ = ori.alpha;
+		}
 
-		let check = Math.abs( this.zStart - ori.alpha );
-		if( check >= 30 ) this.rotFlg = true;
 
+		//回転開始
 		if( this.rotFlg )
 		{
 			this.sprite.rotation += 12;
 		}
-		
+
+		//回転止める
+		if( this.rotFlg )
+		{
+			let check = Math.abs( this.stopZ - ori.alpha );
+			if( check >= 35 )
+			{
+				this.rotFlg = false;
+				this.checkFlg = true;
+			}
+		}
+
+		//判定フラグ
+		if( this.checkFlg )
+		{
+			if( this.sprite.rotation === 0 )
+			{
+				this.testClearLabel.show();
+			}
+			else
+			{
+				this.testNotClearLabel.show();
+			}
+		}
+
+		//ラベル更新
+		this.accelRotateLabel.text = this.rotFlg;
+		this.accelOrientationLabel.text = ori.alpha;
+
 
 	}, //end update
 

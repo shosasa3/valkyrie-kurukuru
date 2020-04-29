@@ -134,7 +134,7 @@ phina.define("MainScene", {
 
 		this.rotFlg = false;	//回転フラグ
 		this.checkFlg = false;	//判定フラグ
-		this.stopZ  = null;	//回転を止めた時のZ軸
+		this.startZ  = null;	//回転を止めた時のZ軸
 		
 
 		//画面をクリックしたら
@@ -170,10 +170,6 @@ phina.define("MainScene", {
 		let rot  = accel.rotation;
 		let ori  = accel.orientation;	//alphaでz軸
 
-		this.accelOrientation = ori.alpha;
-		this.accelOrientationBeta = ori.beta;
-		this.accelOrientationGamma = ori.gamma;
-		
 
 		//回転スタート
 		if( this.checkFlg == false )
@@ -181,12 +177,12 @@ phina.define("MainScene", {
 			if( ori.alpha >= 100 && ori.alpha <=120 )
 			{
 				this.rotFlg = true;
-				this.stopZ = ori.alpha;
+				this.startZ = ori.alpha;
 			}
 			if( ori.alpha >= 240 && ori.alpha <=280 )
 			{
 				this.rotFlg = true;
-				this.stopZ = ori.alpha;
+				this.startZ = ori.alpha;
 			}
 		}
 
@@ -199,7 +195,7 @@ phina.define("MainScene", {
 		//回転止める
 		if( this.rotFlg )
 		{
-			let check = Math.abs( this.stopZ - ori.alpha );
+			let check = Math.abs( this.startZ - ori.alpha );	//差をチェック
 			if( check >= 35 )
 			{
 				this.rotFlg = false;
@@ -220,7 +216,12 @@ phina.define("MainScene", {
 			}
 		}
 
-		
+
+		//ラベル更新
+		this.accelOrientationLabel.text = "alpha:"+ ori.alpha;
+		this.accelOrientationBetaLabel.text = "beta:"+ ori.beta;
+		this.accelOrientationGammaLabel.text = "gamma:"+ ori.gamma;
+
 
 	}, //end update
 

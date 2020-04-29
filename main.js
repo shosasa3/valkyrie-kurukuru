@@ -43,6 +43,12 @@ function request_permission()
 	 ) {
 	 	DeviceOrientationEvent.requestPermission();
 	 }
+
+	let b = document.getElementById("button");
+	b.style.display = "none";
+
+	alert("傾きセンサー使えます。");
+
 }
 
 
@@ -79,9 +85,6 @@ phina.define("TitleScene", {
 		
 		//スタートボタンが押されたら?
 		this.sButton.onpointstart = function() {
-
-			request_permission();	//傾きセンサーの許可を取る
-
 
 			//ボタンがクリックされたら？
 			self.exit();	//go to MainScene
@@ -129,15 +132,12 @@ phina.define("MainScene", {
 
 		//画面をクリックしたら
 		this.onpointstart = function( e ){
-
-			request_permission();
 		};
 
 		this.accelRotate = 0;
 		this.accelRotateLabel = Label( this.accelRotate ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center() );
 		this.accelOrientation = 0;
 		this.accelOrientationLabel = Label( this.accelOrientation ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+40 );
-
 
 
 	}, //end init

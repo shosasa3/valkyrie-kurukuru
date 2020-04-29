@@ -131,6 +131,8 @@ phina.define("MainScene", {
 		this.sprite.x = this.gridX.center();
 		this.sprite.y = this.gridY.center();
 
+		this.zStart = null;
+
 
 		//画面をクリックしたら
 		this.onpointstart = function( e ){
@@ -154,13 +156,14 @@ phina.define("MainScene", {
 		let rot  = accel.rotation;
 		let ori  = accel.orientation;	//alphaでz軸
 
-		let zStart = ori.alpha;
+		if( this.zStart == null ) this.zStart = ori.alpha;
+		
 		let rotFlg = false;
 
 		this.accelRotateLabel.text = rot.x;
 		this.accelOrientationLabel.text = ori.alpha;
 
-		let check = Math.abs( zStart - ori.alpha );
+		let check = Math.abs( this.zStart - ori.alpha );
 		if( check >= 30 ) rotFlg = true;
 
 		if( rotFlg )

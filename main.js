@@ -159,7 +159,7 @@ phina.define("MainScene", {
 
 		if( this.zStart == null ) this.zStart = ori.alpha;
 		
-		this.accelRotateLabel.text = rot.x;
+		this.accelRotateLabel.text = this.rotFlg;
 		this.accelOrientationLabel.text = ori.alpha;
 
 		let check = Math.abs( this.zStart - ori.alpha );

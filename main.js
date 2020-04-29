@@ -146,10 +146,15 @@ phina.define("MainScene", {
 		this.accelRotateLabel = Label( this.accelRotate ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center() );
 		this.accelOrientation = 0;
 		this.accelOrientationLabel = Label( this.accelOrientation ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+40 );
+		this.accelOrientationBeta = 0;
+		this.accelOrientationBetaLabel = Label( this.accelOrientationBeta ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+80 );
+		this.accelOrientationGamma = 0;
+		this.accelOrientationGammaLabel = Label( this.accelOrientationGamma ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+120 );
+
 
 		//@check ラベル
-		this.testClearLabel = Label( "クリアしました。" ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+140 );
-		this.testNotClearLabel = Label( "失敗です" ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+140 );
+		this.testClearLabel = Label( "クリアしました。" ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+240 );
+		this.testNotClearLabel = Label( "失敗です" ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+240 );
 		this.testClearLabel.hide();
 		this.testNotClearLabel.hide();
 
@@ -167,17 +172,19 @@ phina.define("MainScene", {
 
 		
 		//回転スタート
-		if( ori.alpha >= 100 && ori.alpha <=120 )
+		if( this.checkFlg == false )
 		{
-			this.rotFlg = true;
-			this.stopZ = ori.alpha;
+			if( ori.alpha >= 100 && ori.alpha <=120 )
+			{
+				this.rotFlg = true;
+				this.stopZ = ori.alpha;
+			}
+			if( ori.alpha >= 240 && ori.alpha <=280 )
+			{
+				this.rotFlg = true;
+				this.stopZ = ori.alpha;
+			}
 		}
-		if( ori.alpha >= 240 && ori.alpha <=280 )
-		{
-			this.rotFlg = true;
-			this.stopZ = ori.alpha;
-		}
-
 
 		//回転開始
 		if( this.rotFlg )
@@ -212,6 +219,8 @@ phina.define("MainScene", {
 		//ラベル更新
 		this.accelRotateLabel.text = this.rotFlg;
 		this.accelOrientationLabel.text = ori.alpha;
+		this.accelOrientationBetaLabel.text = ori.beta;
+		this.accelOrientationGammaLabel.text = ori.gamma;
 
 
 	}, //end update

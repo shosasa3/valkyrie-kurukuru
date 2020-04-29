@@ -145,11 +145,11 @@ phina.define("MainScene", {
 		this.accelRotate = 0;
 		this.accelRotateLabel = Label( this.accelRotate ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center() );
 		this.accelOrientation = 0;
-		this.accelOrientationLabel = Label( this.accelOrientation ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+40 );
+		this.accelOrientationLabel = Label( "alpha:"+this.accelOrientation ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+40 );
 		this.accelOrientationBeta = 0;
-		this.accelOrientationBetaLabel = Label( this.accelOrientationBeta ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+80 );
+		this.accelOrientationBetaLabel = Label( "beta:"+this.accelOrientationBeta ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+80 );
 		this.accelOrientationGamma = 0;
-		this.accelOrientationGammaLabel = Label( this.accelOrientationGamma ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+120 );
+		this.accelOrientationGammaLabel = Label( "gamma:"+this.accelOrientationGamma ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+120 );
 
 
 		//@check ラベル
@@ -170,7 +170,11 @@ phina.define("MainScene", {
 		let rot  = accel.rotation;
 		let ori  = accel.orientation;	//alphaでz軸
 
+		this.accelOrientation = ori.alpha;
+		this.accelOrientationBeta = ori.beta;
+		this.accelOrientationGamma = ori.gamma;
 		
+
 		//回転スタート
 		if( this.checkFlg == false )
 		{
@@ -216,12 +220,7 @@ phina.define("MainScene", {
 			}
 		}
 
-		//ラベル更新
-		this.accelRotateLabel.text = this.rotFlg;
-		this.accelOrientationLabel.text = ori.alpha;
-		this.accelOrientationBetaLabel.text = ori.beta;
-		this.accelOrientationGammaLabel.text = ori.gamma;
-
+		
 
 	}, //end update
 

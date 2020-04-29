@@ -167,7 +167,7 @@ phina.define("MainScene", {
 
 		if( this.rotFlg )
 		{
-			this.sprite.rotation += 5;
+			this.sprite.rotation += 12;
 		}
 		
 

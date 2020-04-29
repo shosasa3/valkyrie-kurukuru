@@ -25,6 +25,7 @@ var ASSETS = {
 	},
 };
 
+
 //傾きセンサーを許可するための処理(ios13~)
 function request_permission()
 {
@@ -49,7 +50,8 @@ function request_permission()
 
 	alert("傾きセンサー使えます。");
 
-}
+
+}//end function request_permission()
 
 
 /**********************************************************
@@ -124,16 +126,17 @@ phina.define("MainScene", {
 		this.backgroundColor = 'skyblue';
 
 		// スプライト画像作成
-		var sprite = Sprite('numbers').addChildTo( this );
+		this.sprite = Sprite('numbers').addChildTo( this );
 		// 初期位置
-		sprite.x = this.gridX.center();
-		sprite.y = this.gridY.center();
+		this.sprite.x = this.gridX.center();
+		this.sprite.y = this.gridY.center();
 
 
 		//画面をクリックしたら
 		this.onpointstart = function( e ){
 		};
 
+		//値をラベルで一応表示
 		this.accelRotate = 0;
 		this.accelRotateLabel = Label( this.accelRotate ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center() );
 		this.accelOrientation = 0;
@@ -146,14 +149,25 @@ phina.define("MainScene", {
 	//更新処理
 	update: function( app ) {
 	
-		let accel = app.accelerometer;
+		let accel = app.accelerometer;	//傾きセンサー取得
 
-		let rote = accel.rotation;
-		let ori  = accel.orientation;
+		let rot  = accel.rotation;
+		let ori  = accel.orientation;	//alphaでz軸
 
-		this.accelRotateLabel.text = rote.x;
+		let zStart = ori.alpha;
+		let rotFlg = false;
+
+		this.accelRotateLabel.text = rot.x;
 		this.accelOrientationLabel.text = ori.alpha;
 
+		let check = Math.abs( zStart - ori.alpha );
+		if( check >= 30 ) rotFlg = true;
+
+		if( rotFlg )
+		{
+			this.sprite.rotation += 5;
+		}
+		
 
 	}, //end update
 

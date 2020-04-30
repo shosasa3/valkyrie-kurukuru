@@ -24,6 +24,7 @@ var ASSETS = {
 	// 画像
 	image: {
 		'numbers': './images/numbers.jpg',	//クリアタイム数字画像
+		'pkey': './images/pkey.png',	//プログライズキー
 	},
 };
 
@@ -128,12 +129,15 @@ phina.define("MainScene", {
 		this.backgroundColor = 'skyblue';
 
 		// スプライト画像作成
-		this.sprite = Sprite('numbers').addChildTo( this );
+		this.sprite = Sprite('pkey').addChildTo( this );
 		// 初期位置
 		this.sprite.x = this.gridX.center();
 		this.sprite.y = this.gridY.center();
+		this.sprite.rotation = 0;	//角度を0度にしておく
+
 
 		let self = this;	//thisを参照しておく
+
 
 		this.rotFlg = false;	//回転フラグ
 		this.checkFlg = false;	//判定フラグ

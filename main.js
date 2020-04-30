@@ -227,12 +227,12 @@ phina.define("MainScene", {
 		//回転スタートチェック
 		if( this.checkFlg == false )
 		{
-			if( ori.alpha >= 65 && ori.alpha <=140 )
+			if( ori.alpha >= 65 && ori.alpha <= 140 )
 			{
 				this.rotFlg = true;
 				this.startZ = ori.alpha;
 			}
-			if( ori.alpha >= 220 && ori.alpha <=290 )
+			if( ori.alpha >= 220 && ori.alpha <= 280 )
 			{
 				this.rotFlg = true;
 				this.startZ = ori.alpha;
@@ -249,7 +249,7 @@ phina.define("MainScene", {
 		if( this.rotFlg )
 		{
 			let check = Math.abs( this.startZ - ori.alpha );	//差をチェック
-			if( check >= 35 )
+			if( check >= 20 )
 			{
 				this.rotFlg   = false;
 				this.checkFlg = true;

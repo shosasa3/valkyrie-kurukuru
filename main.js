@@ -11,7 +11,7 @@
 //phina.js をグローバル領域に展開
 phina.globalize();
 
-var DEBUG_FLG = false;	//デバッグフラグ
+var DEBUG_FLG = true;	//デバッグフラグ
 
 
 /******************************************

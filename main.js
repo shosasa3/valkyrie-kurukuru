@@ -11,7 +11,7 @@
 //phina.js をグローバル領域に展開
 phina.globalize();
 
-var DEBUG_FLG = true;	//デバッグフラグ
+var DEBUG_FLG = false;	//デバッグフラグ
 
 
 /******************************************
@@ -133,6 +133,7 @@ phina.define("MainScene", {
 		this.sprite.x = this.gridX.center();
 		this.sprite.y = this.gridY.center();
 
+		let self = this;	//thisを参照しておく
 
 		this.rotFlg = false;	//回転フラグ
 		this.checkFlg = false;	//判定フラグ
@@ -161,7 +162,6 @@ phina.define("MainScene", {
 		this.replayButton.hide();
 
 		//もしボタンが押されたら?
-		let self = this;
 		this.replayButton.onclick = function(){
 
 			self.checkFlg = false;
@@ -180,7 +180,6 @@ phina.define("MainScene", {
 		this.restartButton.hide();
 
 		//もしリスタートボタンが押されたら?
-		let self = this;
 		this.restartButton.onclick = function(){
 
 			self.checkFlg = false;

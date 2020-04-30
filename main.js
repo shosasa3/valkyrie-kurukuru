@@ -150,7 +150,10 @@ phina.define("MainScene", {
 		this.accelOrientationBetaLabel = Label( "beta:"+this.accelOrientationBeta ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+80 );
 		this.accelOrientationGamma = 0;
 		this.accelOrientationGammaLabel = Label( "gamma:"+this.accelOrientationGamma ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+120 );
-
+		this.accelGravityLabelX = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+150 );
+		this.accelGravityLabelY = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+180 );
+		this.accelGravityLabelZ = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+210 );
+		
 
 		//@check ラベル
 		this.testClearLabel = Label( "クリアしました。" ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+240 );
@@ -169,6 +172,7 @@ phina.define("MainScene", {
 
 		let rot  = accel.rotation;
 		let ori  = accel.orientation;	//alphaでz軸
+		let grav = accel.gravity;	//重力加速度
 
 
 		//回転スタート
@@ -221,6 +225,9 @@ phina.define("MainScene", {
 		this.accelOrientationLabel.text = "alpha:"+ ori.alpha;
 		this.accelOrientationBetaLabel.text = "beta:"+ ori.beta;
 		this.accelOrientationGammaLabel.text = "gamma:"+ ori.gamma;
+		this.accelGravityLabelX.text ="x:"+grav.x;
+		this.accelGravityLabelY.text ="y:"+grav.y;
+		this.accelGravityLabelZ.text ="z:"+grav.z;
 
 
 	}, //end update

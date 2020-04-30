@@ -162,9 +162,12 @@ phina.define("MainScene", {
 
 		//もしボタンが押されたら?
 		this.replayButton.onclick = function(){
+
 			this.checkFlg = false;
+			this.sprite.rotation = 0;
 		};
 		
+
 		//リスタートボタン
 		this.restartButton = Button({
 			text : 'もう一度プレイする',
@@ -177,9 +180,12 @@ phina.define("MainScene", {
 
 		//もしリスタートボタンが押されたら?
 		this.restartButton.onclick = function(){
+
 			this.checkFlg = false;
 			this.clearTimes = 0;
+			this.sprite.rotation = 0;
 		};
+
 
 		//画面をクリックしたら
 		this.onpointstart = function( e ){
@@ -276,7 +282,10 @@ phina.define("MainScene", {
 		{
 			this.clearLabel.hide();
 			this.notClearLabel.hide();
+
 			this.replayButton.hide();
+			this.restartButton.hide();
+
 			this.clearTimesLabel.hide();
 
 		}

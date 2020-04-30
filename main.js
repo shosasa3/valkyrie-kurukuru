@@ -174,7 +174,8 @@ phina.define("MainScene", {
 			text : 'もう一度プレイする',
 			fill : '#3D9AC1',
 			fontColor: '#ffffff',
-			fontSize: 30,
+			fontSize: 25,
+			width: 250,
 
 		}).addChildTo( this ).setPosition( this.gridX.center(),this.gridY.center()+300 );
 		this.restartButton.hide();

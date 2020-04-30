@@ -161,10 +161,11 @@ phina.define("MainScene", {
 		this.replayButton.hide();
 
 		//もしボタンが押されたら?
+		let self = this;
 		this.replayButton.onclick = function(){
 
-			this.checkFlg = false;
-			this.sprite.rotation = 0;
+			self.checkFlg = false;
+			self.sprite.rotation = 0;
 		};
 		
 
@@ -179,11 +180,12 @@ phina.define("MainScene", {
 		this.restartButton.hide();
 
 		//もしリスタートボタンが押されたら?
+		let self = this;
 		this.restartButton.onclick = function(){
 
-			this.checkFlg = false;
-			this.clearTimes = 0;
-			this.sprite.rotation = 0;
+			self.checkFlg = false;
+			self.clearTimes = 0;
+			self.sprite.rotation = 0;
 		};
 
 

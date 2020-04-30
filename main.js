@@ -11,7 +11,8 @@
 //phina.js をグローバル領域に展開
 phina.globalize();
 
-var DEBUG_FLG = true;	//デバッグフラグ
+
+var DEBUG_FLG = false;	//デバッグフラグ
 
 
 /******************************************
@@ -76,7 +77,7 @@ phina.define("TitleScene", {
 		let self = this;
 
 		// 背景色
-		this.backgroundColor = 'skyblue';
+		this.backgroundColor = 'white';
 
 		//スタートボタン
 		this.sButton = Button({
@@ -126,7 +127,7 @@ phina.define("MainScene", {
 		this.superInit();
 
 		// 背景色
-		this.backgroundColor = 'skyblue';
+		this.backgroundColor = 'white';
 
 		// スプライト画像作成
 		this.sprite = Sprite('pkey').addChildTo( this );
@@ -265,7 +266,7 @@ phina.define("MainScene", {
 		if( this.checkFlg )
 		{
 			//もし成功したら？
-			if( this.sprite.rotation === 0 )
+			if( this.sprite.rotation === 0 )	//一応0度正面で成功にしておく
 			{
 				this.clearLabel.show();
 

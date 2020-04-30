@@ -11,6 +11,8 @@
 //phina.js をグローバル領域に展開
 phina.globalize();
 
+var DEBUG_FLG = true;	//デバッグフラグ
+
 
 /******************************************
 
@@ -135,31 +137,70 @@ phina.define("MainScene", {
 		this.rotFlg = false;	//回転フラグ
 		this.checkFlg = false;	//判定フラグ
 		this.startZ  = null;	//回転を止めた時のZ軸
+		this.clearTimes = 0;	//連続で変身成功した回数
 		
+
+		//ラベル
+		this.clearLabel = Label( "変身成功！" ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+240 );
+		this.notClearLabel = Label( "変身失敗..." ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+240 );
+		this.clearLabel.hide();
+		this.notClearLabel.hide();
+
+		this.clearTimesLabel = Label( "変身成功:" ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+270 );	//変身成功回数ラベル
+		this.clearTimesLabel.hide();
+
+
+		//ボタン
+		this.replayButton = Button({
+			text : 'もう1回',
+			fill : '#3D9AC1',
+			fontColor: '#ffffff',
+			fontSize: 30,
+
+		}).addChildTo( this ).setPosition( this.gridX.center(),this.gridY.center()+300 );
+		this.replayButton.hide();
+
+		//もしボタンが押されたら?
+		this.replayButton.onclick = function(){
+			this.checkFlg = false;
+		};
+		
+		//リスタートボタン
+		this.restartButton = Button({
+			text : 'もう一度プレイする',
+			fill : '#3D9AC1',
+			fontColor: '#ffffff',
+			fontSize: 30,
+
+		}).addChildTo( this ).setPosition( this.gridX.center(),this.gridY.center()+300 );
+		this.restartButton.hide();
+
+		//もしリスタートボタンが押されたら?
+		this.restartButton.onclick = function(){
+			this.checkFlg = false;
+			this.clearTimes = 0;
+		};
 
 		//画面をクリックしたら
 		this.onpointstart = function( e ){
 		};
 
-		//値をラベルで一応表示
-		this.accelRotate = 0;
-		this.accelRotateLabel = Label( this.accelRotate ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center() );
-		this.accelOrientation = 0;
-		this.accelOrientationLabel = Label( "alpha:"+this.accelOrientation ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+40 );
-		this.accelOrientationBeta = 0;
-		this.accelOrientationBetaLabel = Label( "beta:"+this.accelOrientationBeta ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+80 );
-		this.accelOrientationGamma = 0;
-		this.accelOrientationGammaLabel = Label( "gamma:"+this.accelOrientationGamma ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+120 );
-		this.accelGravityLabelX = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+150 );
-		this.accelGravityLabelY = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+180 );
-		this.accelGravityLabelZ = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+210 );
-		
 
-		//@check ラベル
-		this.testClearLabel = Label( "クリアしました。" ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+240 );
-		this.testNotClearLabel = Label( "失敗です" ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+240 );
-		this.testClearLabel.hide();
-		this.testNotClearLabel.hide();
+		if( DEBUG_FLG )
+		{
+			//値をラベルで一応表示
+			this.accelRotate = 0;
+			this.accelRotateLabel = Label( this.accelRotate ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center() );
+			this.accelOrientation = 0;
+			this.accelOrientationLabel = Label( "alpha:"+this.accelOrientation ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+40 );
+			this.accelOrientationBeta = 0;
+			this.accelOrientationBetaLabel = Label( "beta:"+this.accelOrientationBeta ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+80 );
+			this.accelOrientationGamma = 0;
+			this.accelOrientationGammaLabel = Label( "gamma:"+this.accelOrientationGamma ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+120 );
+			this.accelGravityLabelX = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+150 );
+			this.accelGravityLabelY = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+180 );
+			this.accelGravityLabelZ = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+210 );
+		}
 
 
 	}, //end init
@@ -175,25 +216,26 @@ phina.define("MainScene", {
 		let grav = accel.gravity;	//重力加速度
 
 
-		//回転スタート
+
+		//回転スタートチェック
 		if( this.checkFlg == false )
 		{
-			if( ori.alpha >= 100 && ori.alpha <=120 )
+			if( ori.alpha >= 65 && ori.alpha <=140 )
 			{
 				this.rotFlg = true;
 				this.startZ = ori.alpha;
 			}
-			if( ori.alpha >= 240 && ori.alpha <=280 )
+			if( ori.alpha >= 220 && ori.alpha <=290 )
 			{
 				this.rotFlg = true;
 				this.startZ = ori.alpha;
 			}
 		}
 
-		//回転開始
+		//回転中..
 		if( this.rotFlg )
 		{
-			this.sprite.rotation += 12;
+			this.sprite.rotation += 20;
 		}
 
 		//回転止める
@@ -202,7 +244,7 @@ phina.define("MainScene", {
 			let check = Math.abs( this.startZ - ori.alpha );	//差をチェック
 			if( check >= 35 )
 			{
-				this.rotFlg = false;
+				this.rotFlg   = false;
 				this.checkFlg = true;
 			}
 		}
@@ -210,24 +252,47 @@ phina.define("MainScene", {
 		//判定フラグ
 		if( this.checkFlg )
 		{
+			//もし成功したら？
 			if( this.sprite.rotation === 0 )
 			{
-				this.testClearLabel.show();
+				this.clearLabel.show();
+
+				this.clearTimes ++;	//クリア回数をプラス
+				this.clearTimesLabel.text = "変身成功回数:"+this.clearTimes;
+				this.clearTimesLabel.show();
+
+				this.replayButton.show();
 			}
 			else
 			{
-				this.testNotClearLabel.show();
+				this.notClearLabel.show();
+
+				this.restartButton.show();
+
 			}
 		}
 
+		if( this.checkFlg == false )
+		{
+			this.clearLabel.hide();
+			this.notClearLabel.hide();
+			this.replayButton.hide();
+			this.clearTimesLabel.hide();
 
-		//ラベル更新
-		this.accelOrientationLabel.text = "alpha:"+ ori.alpha;
-		this.accelOrientationBetaLabel.text = "beta:"+ ori.beta;
-		this.accelOrientationGammaLabel.text = "gamma:"+ ori.gamma;
-		this.accelGravityLabelX.text ="x:"+grav.x;
-		this.accelGravityLabelY.text ="y:"+grav.y;
-		this.accelGravityLabelZ.text ="z:"+grav.z;
+		}
+
+
+
+		//デバッグラベル更新
+		if( DEBUG_FLG )
+		{
+			this.accelOrientationLabel.text = "alpha:"+ ori.alpha;
+			this.accelOrientationBetaLabel.text = "beta:"+ ori.beta;
+			this.accelOrientationGammaLabel.text = "gamma:"+ ori.gamma;
+			this.accelGravityLabelX.text ="x:"+grav.x;
+			this.accelGravityLabelY.text ="y:"+grav.y;
+			this.accelGravityLabelZ.text ="z:"+grav.z;
+		}
 
 
 	}, //end update

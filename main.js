@@ -60,7 +60,9 @@ function request_permission()
 
 /**********************************************************
 
-	@TitleScene class
+
+	TitleScene class
+
 
 **********************************************************/
 phina.define("TitleScene", {
@@ -93,7 +95,7 @@ phina.define("TitleScene", {
 		this.sButton.onpointstart = function() {
 
 			//ボタンがクリックされたら？
-			self.exit( "main" );	//go to MainScene
+			self.exit( "ready" );	//go to ReadyScene
 		};
 
 
@@ -109,10 +111,91 @@ phina.define("TitleScene", {
 });
 
 
+/**********************************************************
+
+
+	ReadyScene class
+
+
+**********************************************************/
+phina.define("ReadyScene", {
+
+	// 継承
+	superClass: 'DisplayScene',
+
+	//初期化
+	init: function() {
+
+		// 親クラス初期化
+		this.superInit();
+
+		let self = this;	//参照用
+
+		// 背景色
+		this.backgroundColor = 'white';
+
+
+		// スプライト
+		this.sprite = Sprite('pkey').addChildTo( this );
+		// 初期位置
+		this.sprite.x = this.gridX.center();
+		this.sprite.y = this.gridY.center() + 50;
+
+
+		this.angle = Math.round( Math.random() * 360 );	//0~360の角度で
+		this.sprite.rotation = this.angle;
+		this.sprite.alpha = 0.5;	//一応透明度を下げておく
+
+
+		//ラベル
+		this.Label1 = Label( "この位置で止めてみせろ！" ).addChildTo( this ).setPosition( this.gridX.center(), 100 );
+		this.alphaspLabel1 = -0.05;
+
+		//ラベル透明処理
+		this.Label1.update = function(){
+
+			self.Label1.alpha += self.alphaspLabel1;
+			if( self.Label1.alpha < 0.05 )  self.alphaspLabel1 *= -1;
+			if( self.Label1.alpha > 0.95 )  self.alphaspLabel1 *= -1;
+		};
+
+
+		//始めるボタン
+		this.sButton = Button({
+			text : '始める',
+			fill : '#3D9AC1',
+			fontColor: '#ffffff',
+			fontSize: 32,
+
+		}).addChildTo( this ).setPosition( this.gridX.center(),this.gridY.center()+380 );
+
+		
+		//スタートボタンが押されたら?
+		this.sButton.onpointstart = function() {
+
+			self.exit( "main",{angle: self.angle} );	//go to MainScene
+		};
+
+
+	}, //end init
+
+
+	//更新処理
+	update: function( app ) {
+
+
+	}, //end update
+
+
+});//end readyScene
+
+
 
 /**********************************************************
 
-	@MainScene class
+
+	MainScene class
+
 
 **********************************************************/
 phina.define("MainScene", {
@@ -121,10 +204,10 @@ phina.define("MainScene", {
 	superClass: 'DisplayScene',
 
 	//初期化
-	init: function( app ) {
+	init: function( param ) {
 
 		// 親クラス初期化
-		this.superInit();
+		this.superInit( param );
 
 		// 背景色
 		this.backgroundColor = 'white';
@@ -140,17 +223,20 @@ phina.define("MainScene", {
 		let self = this;	//thisを参照しておく
 
 
-		this.rotFlg = false;	//回転フラグ
-		this.checkFlg = false;	//判定フラグ
+		this.rotFlg = 0;	//回転フラグ
+		this.checkFlg = 0;	//判定フラグ
 		this.startZ  = null;	//回転を止めた時のZ軸
 		this.clearTimes = 0;	//連続で変身成功した回数
+		this.correctAng = param.angle;	//正解の角度
 		
 
 		//ラベル
 		this.clearLabel = Label( "変身成功！" ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+240 );
 		this.notClearLabel = Label( "変身失敗..." ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+240 );
 		this.clearLabel.hide();
-		this.notClearLabel.hide();
+		this.notClearLabel.hide();	//ラベルを隠す
+		this.notClearLabel.setScale( 5.0,5.0 );	//拡大しておく
+
 
 		this.clearTimesLabel = Label( "変身成功:" ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+270 );	//変身成功回数ラベル
 		this.clearTimesLabel.hide();
@@ -169,7 +255,7 @@ phina.define("MainScene", {
 		//もしボタンが押されたら?
 		this.replayButton.onclick = function(){
 
-			self.checkFlg = false;
+			self.checkFlg = 0;
 			self.sprite.rotation = 0;
 		};
 		
@@ -188,7 +274,7 @@ phina.define("MainScene", {
 		//もしリスタートボタンが押されたら?
 		this.restartButton.onclick = function(){
 
-			self.checkFlg = false;
+			self.checkFlg = 0;
 			self.clearTimes = 0;
 			self.sprite.rotation = 0;
 		};
@@ -199,6 +285,7 @@ phina.define("MainScene", {
 		};
 
 
+		//デバッグ処理
 		if( DEBUG_FLG )
 		{
 			//値をラベルで一応表示
@@ -231,61 +318,79 @@ phina.define("MainScene", {
 
 
 		//回転スタートチェック
-		if( this.checkFlg == false )
+		if( this.checkFlg == 0 )
 		{
 			if( ori.alpha >= 65 && ori.alpha <= 140 )
 			{
-				this.rotFlg = true;
+				this.rotFlg = 1;
 				this.startZ = ori.alpha;
 			}
 			if( ori.alpha >= 220 && ori.alpha <= 280 )
 			{
-				this.rotFlg = true;
+				this.rotFlg = 2;
 				this.startZ = ori.alpha;
 			}
 		}
 
 		//回転中..
-		if( this.rotFlg )
+		if( this.rotFlg === 1 )
+		{
+			this.sprite.rotation -= 20;
+			if( this.sprite.rotation <= -360 ) this.sprite.rotation += 360;
+
+		}
+		if( this.rotFlg === 2 )
 		{
 			this.sprite.rotation += 20;
+			if( this.sprite.rotation >= 360 ) this.sprite.rotation -= 360;
 		}
+		
 
 		//回転止める
-		if( this.rotFlg )
+		if( this.rotFlg != 0 )
 		{
 			let check = Math.abs( this.startZ - ori.alpha );	//差をチェック
 			if( check >= 20 )
 			{
-				this.rotFlg   = false;
-				this.checkFlg = true;
+				this.rotFlg   = 0;
+				this.checkFlg = 1;
 			}
 		}
 
 		//判定フラグ
-		if( this.checkFlg )
+		if( this.checkFlg == 1 )
 		{
 			//もし成功したら？
-			if( this.sprite.rotation === 0 )	//一応0度正面で成功にしておく
+			if( this.sprite.rotation === this.correctAng )	//正解の角度のピッタリ合ったら
 			{
-				this.clearLabel.show();
+				if( this.checkFlg == 1 )
+				{
+					this.clearLabel.show();
 
-				this.clearTimes ++;	//クリア回数をプラス
-				this.clearTimesLabel.text = "変身成功回数:"+this.clearTimes;
-				this.clearTimesLabel.show();
+					this.clearTimes ++;	//クリア回数をプラス
+					this.clearTimesLabel.text = "変身成功回数:"+this.clearTimes;
+					this.clearTimesLabel.show();
 
-				this.replayButton.show();
+					this.replayButton.show();
+				}
 			}
+			//もし失敗したら？
 			else
 			{
-				this.notClearLabel.show();
+				if( this.checkFlg == 1 )
+				{
+					this.checkFlg = 2;	//何回もアニメーションするのを防ぐため
 
-				this.restartButton.show();
+					this.notClearLabel.show();
+					this.notClearLabel.tweener.scaleTo( 1.0, 500 ).play();
+
+					this.restartButton.show();
+				}
 
 			}
 		}
 
-		if( this.checkFlg == false )
+		if( this.checkFlg == 0 )
 		{
 			this.clearLabel.hide();
 			this.notClearLabel.hide();
@@ -313,13 +418,17 @@ phina.define("MainScene", {
 
 	}, //end update
 
-});
+
+});//end MainScene
+
 
 
 /**********************************************************
 
-	@Main
-	メイン処理
+
+	phina.main
+	*メイン処理
+
 
 **********************************************************/
 phina.main( function() {
@@ -333,6 +442,26 @@ phina.main( function() {
 
 		// アセット読み込み
 		assets: ASSETS,
+
+		//独自scene
+		scenes: [
+		   {
+			className: 'TitleScene',
+			label: 'title',
+		   },
+
+		   {
+			className: 'MainScene',
+			label: 'main',
+		   },
+
+		   {
+			className: 'ReadyScene',
+			label: 'ready',
+		   },
+
+		]
+
 	});
 
 	

@@ -428,7 +428,7 @@ phina.define("MainScene", {
 			this.accelGravityLabelX.text ="x:"+grav.x;
 			this.accelGravityLabelY.text ="y:"+grav.y;
 			this.accelGravityLabelZ.text ="z:"+grav.z;
-			this.toTimeLabel.text = this.toResultTime;
+			this.toTimeLabel.text = "角度:"+this.sprite.rotation;
 		}
 
 

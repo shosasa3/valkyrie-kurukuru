@@ -463,19 +463,15 @@ phina.define("ResultScene", {
 		this.backgroundColor = 'white';
 
 
-		// スプライト
+		//刃スプライト
 		this.sprite = Sprite('pkey').addChildTo( this );
 		// 初期位置
-		this.sprite.x = this.gridX.center();
-		this.sprite.y = this.gridY.center() + 50;
+		this.sprite.x = this.gridX.center()+500;
+		this.sprite.y = this.gridY.center();
+		this.sprite.rotation = 90;
 
 
-		this.angle = Math.round( Math.random() * 360 );	//0~360の角度で
-		this.sprite.rotation = this.angle;
-		this.sprite.alpha = 0.5;	//一応透明度を下げておく
-
-
-		//始めるボタン
+		//ボタン
 		this.sButton = Button({
 			text : 'リザルトです',
 			fill : '#3D9AC1',
@@ -487,8 +483,14 @@ phina.define("ResultScene", {
 		
 		//スタートボタンが押されたら?
 		this.sButton.onpointstart = function() {
-
 		};
+
+		//アニメーション
+		this.sprite.tweener.to({
+			x: this.gridX.center(),
+			y: this.gridY.center(),
+
+		},1000,"swing").play();
 
 
 	}, //end init

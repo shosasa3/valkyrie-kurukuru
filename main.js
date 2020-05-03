@@ -401,7 +401,7 @@ phina.define("MainScene", {
 
 		if( this.toResultTime >= 3000 )
 		{
-			self.exit( "result" );	//go to ResultScene
+			this.exit( "result" );	//go to ResultScene
 		}
 		
 

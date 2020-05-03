@@ -228,6 +228,7 @@ phina.define("MainScene", {
 		this.startZ  = null;	//回転を止めた時のZ軸
 		this.clearTimes = 0;	//連続で変身成功した回数
 		this.correctAng = param.angle;	//正解の角度
+		this.toResultTime = 0;
 		
 
 		//ラベル
@@ -275,6 +276,7 @@ phina.define("MainScene", {
 		this.restartButton.onclick = function(){
 
 			self.checkFlg = 0;
+			self.notClearLabel.setScale( 5.0,5.0 );	//拡大しておく
 			self.clearTimes = 0;
 			self.sprite.rotation = 0;
 		};
@@ -308,7 +310,8 @@ phina.define("MainScene", {
 
 	//更新処理
 	update: function( app ) {
-	
+
+		//傾きセンサー関連
 		let accel = app.accelerometer;	//傾きセンサー取得
 
 		let rot  = accel.rotation;
@@ -390,6 +393,17 @@ phina.define("MainScene", {
 			}
 		}
 
+		if( this.checkFlg == 2 )
+		{
+			this.toResultTime += app.deltaTime; //リザルトシーンまでの経過時間を計測
+		}
+
+		if( this.toResultTime >= 3000 )
+		{
+			self.exit( "result" );	//go to ResultScene
+		}
+		
+
 		if( this.checkFlg == 0 )
 		{
 			this.clearLabel.hide();
@@ -420,6 +434,72 @@ phina.define("MainScene", {
 
 
 });//end MainScene
+
+
+
+/**********************************************************
+
+
+	ResultScene class
+
+
+**********************************************************/
+phina.define("ResultScene", {
+
+	// 継承
+	superClass: 'DisplayScene',
+
+	//初期化
+	init: function() {
+
+		// 親クラス初期化
+		this.superInit();
+
+		let self = this;	//参照用
+
+		// 背景色
+		this.backgroundColor = 'white';
+
+
+		// スプライト
+		this.sprite = Sprite('pkey').addChildTo( this );
+		// 初期位置
+		this.sprite.x = this.gridX.center();
+		this.sprite.y = this.gridY.center() + 50;
+
+
+		this.angle = Math.round( Math.random() * 360 );	//0~360の角度で
+		this.sprite.rotation = this.angle;
+		this.sprite.alpha = 0.5;	//一応透明度を下げておく
+
+
+		//始めるボタン
+		this.sButton = Button({
+			text : 'リザルトです',
+			fill : '#3D9AC1',
+			fontColor: '#ffffff',
+			fontSize: 32,
+
+		}).addChildTo( this ).setPosition( this.gridX.center(),this.gridY.center()+380 );
+
+		
+		//スタートボタンが押されたら?
+		this.sButton.onpointstart = function() {
+
+		};
+
+
+	}, //end init
+
+
+	//更新処理
+	update: function( app ) {
+
+
+	}, //end update
+
+
+});//end ResultScene
 
 
 
@@ -458,6 +538,11 @@ phina.main( function() {
 		   {
 			className: 'ReadyScene',
 			label: 'ready',
+		   },
+
+		   {
+			className: 'ResultScene',
+			label: 'result',
 		   },
 
 		]

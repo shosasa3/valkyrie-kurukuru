@@ -284,6 +284,12 @@ phina.define("MainScene", {
 
 		//画面をクリックしたら
 		this.onpointstart = function( e ){
+
+			//デバッグ用
+			if( DEBUG_FLG )
+			{
+				self.exit("result");
+			}
 		};
 
 
@@ -365,7 +371,7 @@ phina.define("MainScene", {
 		if( this.checkFlg == 1 )
 		{
 			//もし成功したら？
-			if( this.sprite.rotation === this.correctAng )	//正解の角度のピッタリ合ったら
+			if( Math.abs( this.sprite.rotation ) === this.correctAng )	//正解の角度のピッタリ合ったら
 			{
 				if( this.checkFlg == 1 )
 				{
@@ -428,7 +434,7 @@ phina.define("MainScene", {
 			this.accelGravityLabelX.text ="x:"+grav.x;
 			this.accelGravityLabelY.text ="y:"+grav.y;
 			this.accelGravityLabelZ.text ="z:"+grav.z;
-			this.toTimeLabel.text = "角度:"+this.sprite.rotation;
+			this.toTimeLabel.text = "角度:" + Math.abs( this.sprite.rotation );
 		}
 
 
@@ -470,6 +476,10 @@ phina.define("ResultScene", {
 		this.sprite.y = this.gridY.center();
 		this.sprite.rotation = 90;
 
+		//ラベル
+		this.resultLabel = Label( "あなたの記録は..." ).addChildTo( this ).setPosition( this.gridX.center()+400, this.gridY.center() - 300 );
+		this.scoreLabel  = Label( "1回。" ).addChildTo( this ).setPosition( this.gridX.center()+400, this.gridY.center() - 260 );
+
 
 		//ボタン
 		this.sButton = Button({
@@ -485,7 +495,18 @@ phina.define("ResultScene", {
 		this.sButton.onpointstart = function() {
 		};
 
+
 		//アニメーション
+		this.resultLabel.tweener.to({
+			x: this.gridX.center(),
+
+		},1000 ).play();
+
+		this.scoreLabel.tweener.to({
+			x: this.gridX.center(),
+
+		},1000 ).play();
+
 		this.sprite.tweener.to({
 			x: this.gridX.center(),
 			y: this.gridY.center(),

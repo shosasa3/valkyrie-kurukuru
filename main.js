@@ -12,7 +12,7 @@
 phina.globalize();
 
 
-var DEBUG_FLG = false;	//デバッグフラグ
+var DEBUG_FLG = true;	//デバッグフラグ
 
 
 /******************************************
@@ -232,14 +232,14 @@ phina.define("MainScene", {
 		
 
 		//ラベル
-		this.clearLabel = Label( "変身成功！" ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+240 );
-		this.notClearLabel = Label( "変身失敗..." ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+240 );
+		this.clearLabel = Label( "変身成功！" ).addChildTo( this ).setPosition( this.gridX.center(), this.gridY.center()+240 );
+		this.notClearLabel = Label( "変身失敗..." ).addChildTo( this ).setPosition( this.gridX.center(), this.gridY.center()+240 );
 		this.clearLabel.hide();
 		this.notClearLabel.hide();	//ラベルを隠す
 		this.notClearLabel.setScale( 5.0,5.0 );	//拡大しておく
 
 
-		this.clearTimesLabel = Label( "変身成功:" ).addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+270 );	//変身成功回数ラベル
+		this.clearTimesLabel = Label( "変身成功:" ).addChildTo( this ).setPosition( this.gridX.center(), this.gridY.center()+270 );	//変身成功回数ラベル
 		this.clearTimesLabel.hide();
 
 
@@ -302,6 +302,7 @@ phina.define("MainScene", {
 			this.accelGravityLabelX = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+150 );
 			this.accelGravityLabelY = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+180 );
 			this.accelGravityLabelZ = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+210 );
+			this.toTimeLabel = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+240 );
 		}
 
 
@@ -427,6 +428,7 @@ phina.define("MainScene", {
 			this.accelGravityLabelX.text ="x:"+grav.x;
 			this.accelGravityLabelY.text ="y:"+grav.y;
 			this.accelGravityLabelZ.text ="z:"+grav.z;
+			this.toTimeLabel.text = this.toResultTime;
 		}
 
 

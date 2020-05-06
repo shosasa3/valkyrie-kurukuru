@@ -251,7 +251,7 @@ phina.define("ReadyScene", {
 
 		this.flame = 0;
 
-		this.angle = Math.round( Math.random() * 360 );	//0~360の角度を取得
+		this.angle = Math.round( Math.random() * 359 );	//0~359の角度を取得
 		this.score = param.score;	//スコアを取得
 
 		// スプライト
@@ -402,6 +402,7 @@ phina.define("MainScene", {
 		this.correctAng = param.angle;	//正解の角度
 		this.toResultTime = 0;
 		this.correctFlg = false;	//正解したか？
+		this.correctRot = 0;	//負の角度を正の角度の値に合わせる
 
 		this.seTime = 0;	//se1を鳴らしてから一定時間経過してまた鳴らす
 
@@ -546,7 +547,7 @@ console.log( this.notClearLabelGroup.children.length );
 			this.seTime += app.deltaTime;
 			if( this.seTime >= 600 ) this.seTime = 0;
 
-
+			this.correctRot = 360 + this.sprite.rotation;	//判定用変数に角度を調整して代入 
 			this.sprite.rotation -= 20;
 			if( this.sprite.rotation <= -360 ) this.sprite.rotation += 360;
 
@@ -558,6 +559,7 @@ console.log( this.notClearLabelGroup.children.length );
 			this.seTime += app.deltaTime;
 			if( this.seTime >= 600 ) this.seTime = 0;
 
+			this.correctRot = this.sprite.rotation;	//判定用変数に角度を代入
 			this.sprite.rotation += 20;
 			if( this.sprite.rotation >= 360 ) this.sprite.rotation -= 360;
 		}
@@ -580,7 +582,7 @@ console.log( this.notClearLabelGroup.children.length );
 		if( this.checkFlg == this.CHECK )
 		{
 			//もし成功したら？
-			if( Math.abs( this.sprite.rotation ) === this.correctAng )	//正解の角度のピッタリ合ったら
+			if( this.correctRot === this.correctAng )	//正解の角度のピッタリ合ったら
 			{
 				if( this.checkFlg == this.CHECK )
 				{
@@ -714,7 +716,7 @@ console.log( this.notClearLabelGroup.children.length );
 			this.accelGravityLabelX.text ="x:"+grav.x;
 			this.accelGravityLabelY.text ="y:"+grav.y;
 			this.accelGravityLabelZ.text ="z:"+grav.z;
-			this.toTimeLabel.text = "角度:" + Math.abs( this.sprite.rotation );
+			this.toTimeLabel.text = "判定角度:" + Math.abs( this.correctRot );
 		}
 
 

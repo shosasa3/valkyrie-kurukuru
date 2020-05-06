@@ -716,7 +716,7 @@ console.log( this.notClearLabelGroup.children.length );
 			this.accelGravityLabelX.text ="x:"+grav.x;
 			this.accelGravityLabelY.text ="y:"+grav.y;
 			this.accelGravityLabelZ.text ="z:"+grav.z;
-			this.toTimeLabel.text = "判定角度:" + Math.abs( this.correctRot );
+			this.toTimeLabel.text = "判定角度:" + Math.abs( this.correctRot )+"正解:"+this.correctAng;
 		}
 
 

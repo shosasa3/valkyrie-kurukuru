@@ -12,7 +12,7 @@
 phina.globalize();
 
 
-var DEBUG_FLG = true;	//デバッグフラグ
+var DEBUG_FLG = false;	//デバッグフラグ
 var FONT_FAMILY = "'游明朝','YuMincho','Hiragino Mincho ProN W3','ヒラギノ明朝 ProN W3','Hiragino Mincho ProN','HG明朝E','ＭＳ Ｐ明朝','ＭＳ 明朝','serif'"
 
 var checkAccel = false;	//傾きセンサーを許可ボタンを押したか？(ios13~)
@@ -209,7 +209,7 @@ phina.define("TitleScene", {
 
 			//アニメーション
 			this.yua.tweener.to({
-				x: this.gridX.center() + 126,
+				x: this.gridX.center() + 130,
 
 			},800,"swing").play();
 
@@ -837,7 +837,7 @@ phina.define("ResultScene", {
 
 		//shareするデータ
 		var params = {
-			  hashtags: ["phina","仮面ライダーゼロワン","仮面ライダーバルキリー","刃唯阿","nitiasa","indiegame"],	//ハッシュタグ
+			  hashtags: ["phina","バルキリークルクル","仮面ライダーゼロワン","仮面ライダーバルキリー","刃唯阿","nitiasa","indiegame"],	//ハッシュタグ
 			  url: phina.global.location && phina.global.location.href,
 		};
 		

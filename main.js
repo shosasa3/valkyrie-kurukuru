@@ -544,7 +544,7 @@ console.log( this.notClearLabelGroup.children.length );
 			if( this.seTime == 0 )	SoundManager.play('se1', null, false);
 
 			this.seTime += app.deltaTime;
-			if( this.seTime >= 800 ) this.seTime = 0;
+			if( this.seTime >= 600 ) this.seTime = 0;
 
 
 			this.sprite.rotation -= 20;
@@ -556,7 +556,7 @@ console.log( this.notClearLabelGroup.children.length );
 			if( this.seTime == 0 )	SoundManager.play('se1', null, false);
 
 			this.seTime += app.deltaTime;
-			if( this.seTime >= 800 ) this.seTime = 0;
+			if( this.seTime >= 600 ) this.seTime = 0;
 
 			this.sprite.rotation += 20;
 			if( this.sprite.rotation >= 360 ) this.sprite.rotation -= 360;

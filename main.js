@@ -168,7 +168,32 @@ phina.define("TitleScene", {
 
 		//傾きセンサーを許可を促すラベル
 		this.label = Label( "ボタンを押して傾きセンサーを許可してください。" ).addChildTo( this ).setPosition( this.gridX.center(),this.gridY.center() - 50 );
-		this.label.fontSize = 24
+		this.label.fontSize = 24;
+
+
+		/**
+		 モバイルでの再生制限アンロックのため、画面タッチ時にSoundを無音再生
+		**/
+		this.on('enter', function(){
+
+			var event = "touchstart";
+			var dom = this.app.domElement;
+			dom.addEventListener( event, ( function() {
+
+			return function f() {
+					var context = phina.asset.Sound.getAudioContext();
+					var buf = context.createBuffer( 1, 1, 22050 );
+					var src = context.createBufferSource();
+					src.buffer = buf;
+					src.connect( context.destination );
+					src.start( 0 );
+
+					dom.removeEventListener( event, f, false );
+
+				}
+
+			}()), false );
+		});
 
 
 	}, //end init
@@ -519,7 +544,7 @@ console.log( this.notClearLabelGroup.children.length );
 			if( this.seTime == 0 )	SoundManager.play('se1', null, false);
 
 			this.seTime += app.deltaTime;
-			if( this.seTime >= 1000 ) this.seTime = 0;
+			if( this.seTime >= 800 ) this.seTime = 0;
 
 
 			this.sprite.rotation -= 20;
@@ -531,7 +556,7 @@ console.log( this.notClearLabelGroup.children.length );
 			if( this.seTime == 0 )	SoundManager.play('se1', null, false);
 
 			this.seTime += app.deltaTime;
-			if( this.seTime >= 1000 ) this.seTime = 0;
+			if( this.seTime >= 800 ) this.seTime = 0;
 
 			this.sprite.rotation += 20;
 			if( this.sprite.rotation >= 360 ) this.sprite.rotation -= 360;
@@ -544,10 +569,10 @@ console.log( this.notClearLabelGroup.children.length );
 			let check = Math.abs( this.startZ - ori.alpha );	//差をチェック
 			if( check >= 20 )
 			{
+				SoundManager.play('se2');	//効果音
+
 				this.rotFlg   = 0;
 				this.checkFlg = this.CHECK;
-
-				SoundManager.play('se2', null, false);	//効果音
 			}
 		}
 

@@ -1,10 +1,10 @@
 #button
 {
 	text-align: center;
-	z-index: 10;	/* d‚È‚è‚ğã‚É‚·‚é‚½‚ß */
+	z-index: 2;	/* d‚È‚è‚ğã‚É‚·‚é‚½‚ß */
 	position: absolute;	/* positionw’è‚µ‚È‚¢‚Æz-index‚ªŒø‚©‚È‚¢ */
 	margin: auto;
-	top: 20px;
+	top: 120px;
 	right: 0px;
     	left: 0px;
     	bottom: 0px;

@@ -377,7 +377,8 @@ phina.define("MainScene", {
 		this.correctAng = param.angle;	//正解の角度
 		this.toResultTime = 0;
 		this.correctFlg = false;	//正解したか？
-		
+
+		this.seTime = 0;	//se1を鳴らしてから一定時間経過してまた鳴らす
 
 		//ラベル
 		this.notClearLabelGroup = DisplayElement().addChildTo( this );	//"変身失敗"ラベルグループ作成
@@ -497,7 +498,6 @@ console.log( this.notClearLabelGroup.children.length );
 		let grav = accel.gravity;	//重力加速度
 
 
-
 		//回転スタートチェック
 		if( this.checkFlg == this.WAIT )
 		{
@@ -516,7 +516,11 @@ console.log( this.notClearLabelGroup.children.length );
 		//回転中..
 		if( this.rotFlg === 1 )
 		{
-			SoundManager.play('se1', null, false);
+			if( this.seTime == 0 )	SoundManager.play('se1', null, false);
+
+			this.seTime += app.deltaTime;
+			if( this.seTime >= 1000 ) this.seTime = 0;
+
 
 			this.sprite.rotation -= 20;
 			if( this.sprite.rotation <= -360 ) this.sprite.rotation += 360;
@@ -524,6 +528,11 @@ console.log( this.notClearLabelGroup.children.length );
 		}
 		if( this.rotFlg === 2 )
 		{
+			if( this.seTime == 0 )	SoundManager.play('se1', null, false);
+
+			this.seTime += app.deltaTime;
+			if( this.seTime >= 1000 ) this.seTime = 0;
+
 			this.sprite.rotation += 20;
 			if( this.sprite.rotation >= 360 ) this.sprite.rotation -= 360;
 		}
@@ -537,6 +546,8 @@ console.log( this.notClearLabelGroup.children.length );
 			{
 				this.rotFlg   = 0;
 				this.checkFlg = this.CHECK;
+
+				SoundManager.play('se2', null, false);	//効果音
 			}
 		}
 

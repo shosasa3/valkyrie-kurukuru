@@ -516,7 +516,7 @@ console.log( this.notClearLabelGroup.children.length );
 		//回転中..
 		if( this.rotFlg === 1 )
 		{
-			SoundManager.play('se1');
+			SoundManager.play('se1', null, false);
 
 			this.sprite.rotation -= 20;
 			if( this.sprite.rotation <= -360 ) this.sprite.rotation += 360;

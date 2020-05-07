@@ -209,7 +209,7 @@ phina.define("TitleScene", {
 
 			//アニメーション
 			this.yua.tweener.to({
-				x: this.gridX.center() + 136,
+				x: this.gridX.center() + 142,
 
 			},800,"swing").play();
 

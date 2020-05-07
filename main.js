@@ -66,7 +66,7 @@ function request_permission()
 	let b = document.getElementById("button");
 	b.style.display = "none";
 
-	alert("傾きセンサー使えます。");
+	alert("傾きセンサーが使えます。");
 
 
 }//end function request_permission()
@@ -209,13 +209,13 @@ phina.define("TitleScene", {
 
 			//アニメーション
 			this.yua.tweener.to({
-				x: this.gridX.center() + 130,
+				x: this.gridX.center() + 136,
 
 			},800,"swing").play();
 
 			//アニメーション
 			this.textSprite.tweener.to({
-				x: this.gridX.center() - 126,
+				x: this.gridX.center() - 130,
 
 			},800,"swing").play();
 
@@ -251,7 +251,8 @@ phina.define("ReadyScene", {
 
 		this.flame = 0;
 
-		this.angle = Math.round( Math.random() * 359 );	//0~359の角度を取得
+		let a = Math.round( Math.random() * 17 );	//0~17の乱数
+		this.angle = a * 20;	//20刻みで角度取得
 		this.score = param.score;	//スコアを取得
 
 		// スプライト

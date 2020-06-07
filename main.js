@@ -44,21 +44,37 @@ var ASSETS = {
 //傾きセンサーを許可するための処理(ios13~)
 function request_permission()
 {
+	/*
 
-	 if (
-		 DeviceMotionEvent &&
-		 DeviceMotionEvent.requestPermission &&
-		 typeof DeviceMotionEvent.requestPermission === 'function'
-	 ) {
-	 	DeviceMotionEvent.requestPermission();
-	 }
-	 if (
-		 DeviceOrientationEvent &&
-		 DeviceOrientationEvent.requestPermission &&
-		 typeof DeviceOrientationEvent.requestPermission === 'function'
-	 ) {
-	 	DeviceOrientationEvent.requestPermission();
-	 }
+	デバッグ時、DeviceMotionEventが通らないときのため
+
+	*/
+	try
+	{
+
+		 if (
+			 DeviceMotionEvent &&
+			 DeviceMotionEvent.requestPermission &&
+			 typeof DeviceMotionEvent.requestPermission === 'function'
+		 ) {
+		 	DeviceMotionEvent.requestPermission();
+		 }
+		 if (
+			 DeviceOrientationEvent &&
+			 DeviceOrientationEvent.requestPermission &&
+			 typeof DeviceOrientationEvent.requestPermission === 'function'
+		 ) {
+		 	DeviceOrientationEvent.requestPermission();
+		 }
+	}
+	catch( e )
+	{
+		//例外処理
+	}
+	finally
+	{
+		//実行したい処理
+	}
 
 	checkAccel = true;
 
@@ -478,9 +494,10 @@ console.log( this.notClearLabelGroup.children.length );
 				//self.exit("result",{score: self.clearTimes} );
 				if( self.rotFlg != 0 )
 				{
-					self.sprite.rotation = self.correctAng;
-					self.rotFlg = 0;
-					self.checkFlg = 1;
+					//self.sprite.rotation = self.correctAng;
+
+					self.rotFlg   = 0;
+					self.checkFlg = self.CHECK;
 				}
 
 				if( self.checkFlg == 0 )
@@ -507,7 +524,7 @@ console.log( this.notClearLabelGroup.children.length );
 			this.accelGravityLabelX = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+150 );
 			this.accelGravityLabelY = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+180 );
 			this.accelGravityLabelZ = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+210 );
-			this.toTimeLabel = Label().addChildTo( this ).setPosition(this.gridX.center(), this.gridY.center()+240 );
+			this.cAngLabel = Label().addChildTo( this ).setPosition( this.gridX.center(), this.gridY.center()+240 );
 		}
 
 
@@ -548,8 +565,8 @@ console.log( this.notClearLabelGroup.children.length );
 			this.seTime += app.deltaTime;
 			if( this.seTime >= 600 ) this.seTime = 0;
 
-			this.correctRot = 360 + this.sprite.rotation;	//判定用変数に角度を調整して代入 
 			this.sprite.rotation -= 20;
+			this.correctRot = 360 + this.sprite.rotation;	//判定用変数に角度を調整して代入 
 			if( this.sprite.rotation <= -360 ) this.sprite.rotation += 360;
 
 		}
@@ -560,8 +577,8 @@ console.log( this.notClearLabelGroup.children.length );
 			this.seTime += app.deltaTime;
 			if( this.seTime >= 600 ) this.seTime = 0;
 
-			this.correctRot = this.sprite.rotation;	//判定用変数に角度を代入
 			this.sprite.rotation += 20;
+			this.correctRot = this.sprite.rotation;	//判定用変数に角度を代入
 			if( this.sprite.rotation >= 360 ) this.sprite.rotation -= 360;
 		}
 		
@@ -717,7 +734,7 @@ console.log( this.notClearLabelGroup.children.length );
 			this.accelGravityLabelX.text ="x:"+grav.x;
 			this.accelGravityLabelY.text ="y:"+grav.y;
 			this.accelGravityLabelZ.text ="z:"+grav.z;
-			this.toTimeLabel.text = "判定角度:" + Math.abs( this.correctRot )+"正解:"+this.correctAng;
+			this.cAngLabel.text = "判定角度:" + Math.abs( this.correctRot )+"正解:"+this.correctAng+"現在角度:"+this.sprite.rotation;
 		}
 
 
